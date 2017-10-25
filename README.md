@@ -11,6 +11,7 @@
 
 (def db-config
   {:processor :yaml
+   :persistor :file-system
    :data-path "data"
    :key-order [:id :title]})
 
@@ -39,6 +40,11 @@ each file:
 - UUIDs are stored as strings
 
 
-## Supported File Formats
+## Supported Processors 
 
- - yaml
+ - `:yaml`
+
+
+## Supported Persistors
+
+ - `:file-system`

@@ -1,15 +1,15 @@
 (ns humandb.core
   (:require
-    [humandb.io :as io]))
+    [humandb.persistor :as persistor]))
 
 (defn get-records [db-config]
-  (->> (io/read-record-ids db-config)
-       (map (partial io/read-record db-config))))
+  (->> (persistor/read-record-ids db-config)
+       (map (partial persistor/read-record db-config))))
 
 (defn get-record [db-config record-id]
-  (io/read-record db-config record-id))
+  (persistor/read-record db-config record-id))
 
 (defn update-record! [db-config record-id partial-record]
-  (-> (io/read-record db-config record-id)
+  (-> (persistor/read-record db-config record-id)
       (merge partial-record)
-      (->> (io/write-record! db-config record-id))))
+      (->> (persistor/write-record! db-config record-id))))
