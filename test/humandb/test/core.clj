@@ -9,9 +9,9 @@
     (with-dir [dir {"foo.yaml" "id: foo\na: 1"}]
       (is (= {:id "foo"
               :a 1}
-             (humandb/get-record {:data-path dir
-                                  :processor :yaml
-                                  :persistor :file-system} "foo"))))))
+             (humandb/get-record {:processor :yaml
+                                  :persistor {:type :file-system
+                                              :data-path dir}} "foo"))))))
 
 (deftest get-records
   (testing "returns all records"
@@ -21,16 +21,16 @@
                 :a 1}
                {:id "bar"
                 :a 2}} 
-             (set (humandb/get-records {:data-path dir
-                                        :processor :yaml
-                                        :persistor :file-system})))))))
+             (set (humandb/get-records {:processor :yaml
+                                        :persistor {:type :file-system
+                                                    :data-path dir}})))))))
 
 (deftest update-record!
   (testing "updates record"
     (with-dir [dir {"foo.yaml" "id: foo\na: 1"}]
-      (let [db-config {:data-path dir
-                       :processor :yaml
-                       :persistor :file-system}]
+      (let [db-config {:processor :yaml
+                       :persistor {:type :file-system
+                                   :data-path dir}}]
         (humandb/update-record! db-config "foo" {:a 3})
         (is (= {:id "foo"
                 :a 3} 

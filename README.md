@@ -11,8 +11,8 @@
 
 (def db-config
   {:processor :yaml
-   :persistor :file-system
-   :data-path "data"
+   :persistor {:type :file-system
+               :data-path "data"}
    :key-order [:id :title]})
 
 ; get all records

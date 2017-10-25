@@ -6,11 +6,11 @@
     [humandb.persistors.interface :as interface]))
 
 (defn -record-file-path [db-config record-id]
-  (str (db-config :data-path) "/" record-id "." (processor/extension db-config)))
+  (str (get-in db-config [:persistor :data-path]) "/" record-id "." (processor/extension db-config)))
 
-(defmethod interface/read-record-ids :file-system
+(defn -read-record-ids 
   [db-config]
-  (->> (db-config :data-path)
+  (->> (get-in db-config [:persistor :data-path])
        io/file
        file-seq
        (filter (fn [f]
@@ -19,6 +19,11 @@
                  (string/ends-with? (.getName f) (processor/extension db-config))))
        (map (fn [f]
               (second (re-matches (re-pattern (str "(.*)\\." (processor/extension db-config))) (.getName f)))))))
+
+(defmethod interface/get-records :file-system
+  [db-config]
+  (->> (-read-record-ids db-config)
+       (map (partial interface/read-record db-config))))
 
 (defmethod interface/read-record :file-system
   [db-config record-id]
