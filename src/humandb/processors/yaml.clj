@@ -1,5 +1,6 @@
 (ns humandb.processors.yaml
   (:require
+    [humandb.processors.interface :as interface]
     [yaml.writer]
     [yaml.reader]))
 
@@ -67,22 +68,20 @@
   (yaml.writer/encode [data]
     (into-sorted-map data)))
 
-(defn extension [_] "yaml")
+(defmethod interface/extension :yaml [_] "yaml")
 
-(defn many-from-string
-  "Given a string containing multiple yaml docs, returns list of corresponding maps"
+(defmethod interface/many-from-string :yaml
   [db-config s]
   (->> (yaml.reader/parse-documents s)
        ; yaml reader returns ordered-maps; convert to regular maps
        (map (partial into {}))))
 
-(defn from-string
+(defmethod interface/from-string :yaml
   [db-config s]
   ; yaml reader returns ordered-maps; convert to regular maps
   (into {} (yaml.reader/parse-string s)))
 
-(defn many-to-string
-  "Given a list of maps, returns string containing multiple yaml docs"
+(defmethod interface/many-to-string :yaml
   [db-config entities]
   (binding [entity-key-order (or (db-config :key-order) [])] 
     (->> entities
@@ -92,7 +91,7 @@
          (clojure.string/join "---\n")
          (str "---\n"))))
 
-(defn to-string
+(defmethod interface/to-string :yaml
   [db-config entity]
   (binding [entity-key-order (or (db-config :key-order) [])] 
     (yaml.writer/generate-string entity :dumper-options {:flow-style :block})))

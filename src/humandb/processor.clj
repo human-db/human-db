@@ -1,25 +1,10 @@
 (ns humandb.processor
   (:require
-    [humandb.processors.yaml :as yaml]))
+    [humandb.processors.yaml :as yaml]
+    [humandb.processors.interface :as interface]))
 
-(defn many-from-string [db-config & args]
-  (case (db-config :processor)
-    :yaml (apply yaml/many-from-string db-config args)))
-
-(defn from-string [db-config & args]
-  (case (db-config :processor)
-    :yaml (apply yaml/from-string db-config args)))
-
-(defn many-to-string [db-config & args]
-  (case (db-config :processor)
-    :yaml (apply yaml/many-to-string db-config args)))
-
-(defn to-string [db-config & args]
-  (case (db-config :processor)
-    :yaml (apply yaml/to-string db-config args)))
-
-(defn extension [db-config]
-  (case (db-config :processor)
-    :yaml (yaml/extension db-config)))
-
-
+(def extension interface/extension)
+(def many-from-string interface/many-from-string)
+(def from-string interface/from-string)
+(def many-to-string interface/many-to-string)
+(def to-string interface/to-string)
