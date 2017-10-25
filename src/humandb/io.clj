@@ -2,10 +2,10 @@
   (:require
     [clojure.java.io :as io]
     [clojure.string :as string]
-    [humandb.adapter :as adapter]))
+    [humandb.processor :as processor]))
 
 (defn -record-file-path [db-config record-id]
-  (str (db-config :data-path) "/" record-id "." (adapter/extension db-config)))
+  (str (db-config :data-path) "/" record-id "." (processor/extension db-config)))
 
 (defn read-record-ids [db-config]
   (->> (db-config :data-path)
@@ -14,16 +14,16 @@
        (filter (fn [f]
                  (.isFile f)))
        (filter (fn [f]
-                 (string/ends-with? (.getName f) (adapter/extension db-config))))
+                 (string/ends-with? (.getName f) (processor/extension db-config))))
        (map (fn [f]
-              (second (re-matches (re-pattern (str "(.*)\\." (adapter/extension db-config))) (.getName f)))))))
+              (second (re-matches (re-pattern (str "(.*)\\." (processor/extension db-config))) (.getName f)))))))
 
 (defn read-record [db-config record-id]
   (->> (-record-file-path db-config record-id)
        io/file
        slurp
-       (adapter/from-string db-config)))
+       (processor/from-string db-config)))
 
 (defn write-record! [db-config record-id record-data]
   (spit (-record-file-path db-config record-id) 
-        (adapter/to-string db-config record-data)))
+        (processor/to-string db-config record-data)))

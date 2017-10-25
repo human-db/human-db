@@ -10,7 +10,7 @@
     [humandb.core :as humandb]))
 
 (def db-config
-  {:adapter :yaml
+  {:processor :yaml
    :data-path "data"
    :key-order [:id :title]})
 
@@ -31,8 +31,8 @@ directory:
 each file:
 
 - name is id of record
-- extension is based on chosen adapter
-- contents are formatted according to the specified adapter
+- extension is based on chosen processor
+- contents are formatted according to the specified processor
 - contains data for 1 record
 - keys within record are ordered alphabetically, descending
   - except for keys provided in :key-order which are given preference

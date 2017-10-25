@@ -1,4 +1,4 @@
-(defproject humandb "0.0.1"
+(defproject humandb "0.1.0"
   :dependencies [[org.clojure/clojure "1.9.0-beta1"]
                  [io.forward/yaml "1.0.6"]]
 

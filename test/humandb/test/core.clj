@@ -10,7 +10,7 @@
       (is (= {:id "foo"
               :a 1}
              (humandb/get-record {:data-path dir
-                                  :adapter :yaml} "foo"))))))
+                                  :processor :yaml} "foo"))))))
 
 (deftest get-records
   (testing "returns all records"
@@ -21,13 +21,13 @@
                {:id "bar"
                 :a 2}} 
              (set (humandb/get-records {:data-path dir
-                                        :adapter :yaml})))))))
+                                        :processor :yaml})))))))
 
 (deftest update-record!
   (testing "updates record"
     (with-dir [dir {"foo.yaml" "id: foo\na: 1"}]
       (let [db-config {:data-path dir
-                       :adapter :yaml}]
+                       :processor :yaml}]
         (humandb/update-record! db-config "foo" {:a 3})
         (is (= {:id "foo"
                 :a 3} 

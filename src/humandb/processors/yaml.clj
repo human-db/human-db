@@ -1,4 +1,4 @@
-(ns humandb.adapters.yaml
+(ns humandb.processors.yaml
   (:require
     [yaml.writer]
     [yaml.reader]))
