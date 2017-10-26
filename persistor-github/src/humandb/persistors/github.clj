@@ -92,8 +92,15 @@
                          :as :byte-array}))
       temp-file)
     (fs.compression/unzip temp-file temp-dir)
-    (reset! -filename->sha (-calc-shas (file-seq temp-dir)))
-    temp-dir))
+    (let [data-path (get-in db-config [:persistor :data-path])
+          data-dir (first (fs/find-files* (.getPath temp-dir) 
+                                          (fn [f]
+                                            (and (.isDirectory f)
+                                                 (re-matches 
+                                                   (re-pattern (str ".*" data-path))
+                                                   (.getPath f))))))]
+      (reset! -filename->sha (-calc-shas (file-seq data-dir)))
+      data-dir)))
 
 (defmethod interface/get-records :github
   [db-config]
