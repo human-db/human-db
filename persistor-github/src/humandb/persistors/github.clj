@@ -71,7 +71,7 @@
                (get-in response [:content :sha]))
         true)
       (do
-        (println "ERROR PUSHING FILE TO GITHUB" path)
+        (println "ERROR PUSHING FILE TO GITHUB" path response)
         nil))))
 
 (defn -calc-shas [files]
