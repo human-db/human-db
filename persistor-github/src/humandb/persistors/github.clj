@@ -43,7 +43,7 @@
     (-> file
         :content
         (string/replace #"\n" "")
-        base64/decode)))
+        base64-decode)))
 
 (defn -update-file! [db-config path {:keys [content message]}]
   (let [repo (get-in db-config [:persistor :repo])
@@ -58,7 +58,7 @@
                                          {:branch branch
                                           :path path
                                           :message message
-                                          :content (base64/encode content "UTF-8")
+                                          :content (base64-encode content "UTF-8")
                                           :sha (@-filename->sha filename)
                                           :committer committer
                                           :author author})})
