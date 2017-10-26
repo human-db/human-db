@@ -95,9 +95,6 @@
     (reset! -filename->sha (-calc-shas (file-seq temp-dir)))
     temp-dir))
 
-(defn -record-file-path [db-config record-id]
-  (str (db-config :data-path) "/" record-id "." (processor/extension db-config)))
-
 (defmethod interface/get-records :github
   [db-config]
   (->> (-fetch-archive! db-config)
