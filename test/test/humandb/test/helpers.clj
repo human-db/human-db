@@ -10,5 +10,3 @@
      (let [result# (do ~@body)]
        (fs/delete-dir ~dir-binding)
        result#)))
-
-

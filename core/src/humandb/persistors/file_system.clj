@@ -8,15 +8,19 @@
 (defn -record-file-path [db-config record-id]
   (str (get-in db-config [:persistor :data-path]) "/" record-id "." (processor/extension db-config)))
 
-(defn -read-record-ids 
-  [db-config]
-  (->> (get-in db-config [:persistor :data-path])
-       io/file
+(defn -files [db-config dir]
+  (->> dir
        file-seq
        (filter (fn [f]
                  (.isFile f)))
        (filter (fn [f]
-                 (string/ends-with? (.getName f) (processor/extension db-config))))
+                 (string/ends-with? (.getName f) (processor/extension db-config))))))
+
+(defn -read-record-ids 
+  [db-config]
+  (->> (get-in db-config [:persistor :data-path])
+       io/file
+       (-files db-config)
        (map (fn [f]
               (second (re-matches (re-pattern (str "(.*)\\." (processor/extension db-config))) (.getName f)))))))
 

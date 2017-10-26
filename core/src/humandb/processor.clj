@@ -1,6 +1,5 @@
 (ns humandb.processor
   (:require
-    [humandb.processors.yaml :as yaml]
     [humandb.processors.interface :as interface]))
 
 (def extension interface/extension)

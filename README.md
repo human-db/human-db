@@ -4,10 +4,16 @@
 ## Usage
 
 ```clojure
+[humandb.core "0.4.0"]
+[humandb.processors.yaml "0.4.0-1"]
+```
+
+```clojure
 
 (ns project.foo
   (:require
-    [humandb.core :as humandb]))
+    [humandb.core :as humandb]
+    [humandb.processors.yaml))
 
 (def db-config
   {:processor :yaml
