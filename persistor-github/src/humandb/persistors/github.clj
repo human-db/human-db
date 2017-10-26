@@ -58,7 +58,7 @@
                                          {:branch branch
                                           :path path
                                           :message message
-                                          :content (base64-encode content "UTF-8")
+                                          :content (base64-encode content)
                                           :sha (@-filename->sha filename)
                                           :committer committer
                                           :author author})})
