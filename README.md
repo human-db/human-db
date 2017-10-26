@@ -5,7 +5,13 @@
 
 ```clojure
 [humandb.core "0.4.0"]
+
+; processors
 [humandb.processors.yaml "0.4.0-1"]
+
+; persistors
+; file-system include in core
+[humandb.persistors.github "0.4.0-1"]  
 ```
 
 ```clojure
@@ -45,12 +51,3 @@ each file:
   - except for keys provided in :key-order which are given preference
 - UUIDs are stored as strings
 
-
-## Supported Processors 
-
- - `:yaml`
-
-
-## Supported Persistors
-
- - `:file-system`
