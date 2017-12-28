@@ -6,9 +6,10 @@
 (defn server-connect-view []
   (let [url (r/atom "")]
     (fn []
-      [:form {:on-submit (fn [e]
-                           (.preventDefault e)
-                           (dispatch [:attempt-connect @url]))}
+      [:form
+       {:on-submit (fn [e]
+                     (.preventDefault e)
+                     (dispatch [:attempt-connect @url]))}
        [:input {:type "text"
                 :value @url
                 :on-change (fn [e]
@@ -16,14 +17,18 @@
        [:button "Connect"]])))
 
 (defn server-pick-view []
-  [:div
-   "Select a HumanDB server to connect to:"
-   (for [url @(subscribe [:connection-urls])]
-     ^{:key url}
-     [:button 
-      {:on-click (fn [_]
-                   (dispatch [:attempt-connect url]))} 
-      url])
-   [server-connect-view]
-   (when-let [error @(subscribe [:connection-error])]
-     [:div error])])
+  [:div.pick
+   [:div
+    [:h1 "HumanDB"]
+    [:h2 "Select a server to connect to:"]
+    [:div.servers
+     (for [url @(subscribe [:connection-urls])]
+       ^{:key url}
+       [:div.server 
+        {:on-click (fn [_]
+                     (dispatch [:attempt-connect url]))} 
+        url])]
+    "Or, connect to a new server:"
+    [server-connect-view]
+    (when-let [error @(subscribe [:connection-error])]
+      [:div error])]])
