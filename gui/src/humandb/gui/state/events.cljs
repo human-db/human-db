@@ -16,7 +16,8 @@
           :connected? false
           :connection-error nil
           :records {}
-          :active-record-id nil}}))
+          :search-query ""
+          :search-result-ids []}}))
 
 (reg-event-fx :attempt-connect
   (fn [{db :db} [_ url]]
@@ -44,6 +45,16 @@
   (fn [{db :db} [_ records]]
     {:db (assoc db :records (key-by-id records))}))
 
-(reg-event-fx :set-active-record
-  (fn [{db :db} [_ id]]
-    {:db (assoc db :active-record-id id)}))
+(reg-event-fx :update-search-query
+  (fn [{db :db} [_ query]]
+    {:db (-> db
+             (assoc :search-query query)
+             (assoc :search-result-ids 
+               (if (clojure.string/blank? query)
+                 []
+                 (->> db
+                      :records
+                      vals 
+                      (filter (fn [record]
+                                (clojure.string/includes? (record :id) query)))
+                      (map :id)))))}))

@@ -7,10 +7,6 @@
   (fn [db _]
     (db :connected?)))
 
-(reg-sub :records
-  (fn [db _]
-    (vals (db :records))))
-
 (reg-sub :connection-urls
   (fn [db _]
     (localstorage/get-connection-urls)))
@@ -19,6 +15,18 @@
   (fn [db _]
     (db :connection-error)))
 
-(reg-sub :active-record
+(reg-sub :search-query
   (fn [db _]
-    (get-in db [:records (db :active-record-id)])))
+    (db :search-query)))
+
+(reg-sub :search-result-ids
+  (fn [db _]
+    (db :search-result-ids)))
+
+(reg-sub :record
+  (fn [db [_ id]]
+    (get-in db [:records id])))
+
+(reg-sub :record-count
+  (fn [db _]
+    (count (db :records))))
