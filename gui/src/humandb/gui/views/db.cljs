@@ -9,9 +9,22 @@
     (for [record records]
       ^{:key (record :id)}
       [:tr
-       [:td (record :id)]])]])
+       [:td {:on-click (fn [_]
+                         (dispatch [:set-active-record (record :id)]))}
+        (record :id)]])]])
+
+(defn record-view [record]
+  [:table
+   [:thead]
+   [:tbody
+    (for [k (keys record)]
+      ^{:key k}
+      [:tr
+       [:td k]
+       [:td (str (record k))]])]])
 
 (defn db-view []
-  [:div
-   "Connected"
-   [records-view @(subscribe [:records])]])
+  [:div.db
+   [records-view @(subscribe [:records])]
+   (when-let [record @(subscribe [:active-record])]
+     [record-view record])])

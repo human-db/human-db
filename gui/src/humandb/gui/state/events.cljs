@@ -15,7 +15,8 @@
     {:db {:url nil
           :connected? false
           :connection-error nil
-          :records {}}}))
+          :records {}
+          :active-record-id nil}}))
 
 (reg-event-fx :attempt-connect
   (fn [{db :db} [_ url]]
@@ -42,3 +43,7 @@
 (reg-event-fx :handle-records
   (fn [{db :db} [_ records]]
     {:db (assoc db :records (key-by-id records))}))
+
+(reg-event-fx :set-active-record
+  (fn [{db :db} [_ id]]
+    {:db (assoc db :active-record-id id)}))

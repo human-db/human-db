@@ -18,3 +18,7 @@
 (reg-sub :connection-error
   (fn [db _]
     (db :connection-error)))
+
+(reg-sub :active-record
+  (fn [db _]
+    (get-in db [:records (db :active-record-id)])))
