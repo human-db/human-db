@@ -2,7 +2,14 @@
   (:require
     [reagent.core :as r]
     [humandb.ui.fields.core :as fields]
-    [humandb.ui.fields.misc]))
+    [humandb.ui.fields.date]
+    [humandb.ui.fields.datetime]
+    [humandb.ui.fields.email]
+    [humandb.ui.fields.enumerable]
+    [humandb.ui.fields.integer]
+    [humandb.ui.fields.lookup]
+    [humandb.ui.fields.url]
+    [humandb.ui.fields.string]))
 
 (defn debounce
   [f ms]
