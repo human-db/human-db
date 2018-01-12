@@ -2,7 +2,8 @@
   (:require
     [clojure.test :refer :all]
     [humandb.test.helpers :refer [with-dir]]
-    [humandb.core :as humandb]))
+    [humandb.core :as humandb]
+    [humandb.processors.yaml]))
 
 (deftest get-record
   (testing "return record"
@@ -26,7 +27,18 @@
                                                     :data-path dir}})))))))
 
 (deftest update-record!
-  (testing "updates record"
+  (testing "creates record"
+    (with-dir [dir {"foo.yaml" "id: foo\na: 1"}]
+      (let [db-config {:processor :yaml
+                       :persistor {:type :file-system
+                                   :data-path dir}}]
+        (humandb/update-record! db-config "bar" {:id "bar"
+                                                 :a 3})
+        (is (= {:id "bar"
+                :a 3} 
+               (humandb/get-record db-config "bar"))))))
+
+  (testing "updates existing record"
     (with-dir [dir {"foo.yaml" "id: foo\na: 1"}]
       (let [db-config {:processor :yaml
                        :persistor {:type :file-system

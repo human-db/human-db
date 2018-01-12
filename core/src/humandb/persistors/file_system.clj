@@ -31,10 +31,12 @@
 
 (defmethod interface/read-record :file-system
   [db-config record-id]
-  (->> (-record-file-path db-config record-id)
-       io/file
-       slurp
-       (processor/from-string db-config)))
+  (let [file (->> (-record-file-path db-config record-id)
+                  io/file)]
+    (when (and (.exists file) (not (.isDirectory file)))
+       (->> file
+            slurp
+            (processor/from-string db-config)))))
 
 (defmethod interface/write-record! :file-system
   [db-config record-id record-data]

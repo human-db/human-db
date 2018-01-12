@@ -9,6 +9,7 @@
   (persistor/read-record db-config record-id))
 
 (defn update-record! [db-config record-id partial-record]
-  (-> (persistor/read-record db-config record-id)
+  (-> (or (persistor/read-record db-config record-id)
+          {})
       (merge partial-record)
       (->> (persistor/write-record! db-config record-id))))
