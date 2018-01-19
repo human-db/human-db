@@ -40,10 +40,10 @@
                  :body
                  (json/read-str :key-fn keyword))]
     (swap! -filename->sha assoc (file :name) (file :sha))
-    (-> file
-        :content
-        (string/replace #"\n" "")
-        base64-decode)))
+    (some-> file
+            :content
+            (string/replace #"\n" "")
+            base64-decode)))
 
 (defn -update-file! [db-config path {:keys [content message]}]
   (let [repo (get-in db-config [:persistor :repo])
@@ -113,9 +113,9 @@
 
 (defmethod interface/read-record :github
   [db-config record-id]
-  (->> (file-system/-record-file-path db-config record-id) 
-       (-fetch-file db-config)
-       (processor/from-string db-config)))
+  (some->> (file-system/-record-file-path db-config record-id) 
+           (-fetch-file db-config)
+           (processor/from-string db-config)))
 
 (defmethod interface/write-record! :github
   [db-config record-id record-data]
