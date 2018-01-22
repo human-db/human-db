@@ -26,6 +26,29 @@
                                         :persistor {:type :file-system
                                                     :data-path dir}})))))))
 
+(deftest store-record!
+  (testing "creates record"
+    (with-dir [dir {"foo.yaml" "id: foo\na: 1"}]
+      (let [db-config {:processor :yaml
+                       :persistor {:type :file-system
+                                   :data-path dir}}]
+        (humandb/store-record! db-config "bar" {:id "bar"
+                                                :a 3})
+        (is (= {:id "bar"
+                :a 3} 
+               (humandb/get-record db-config "bar"))))))
+
+  (testing "overwrites record"
+    (with-dir [dir {"foo.yaml" "id: foo\na: 1"}]
+      (let [db-config {:processor :yaml
+                       :persistor {:type :file-system
+                                   :data-path dir}}]
+        (humandb/store-record! db-config "foo" {:id "foo"
+                                                :a 3})
+        (is (= {:id "foo"
+                :a 3} 
+               (humandb/get-record db-config "foo")))))))
+
 (deftest update-record!
   (testing "creates record"
     (with-dir [dir {"foo.yaml" "id: foo\na: 1"}]

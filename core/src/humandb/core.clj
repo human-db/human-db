@@ -13,3 +13,6 @@
           {})
       (merge partial-record)
       (->> (persistor/write-record! db-config record-id))))
+
+(defn store-record! [db-config record-id record]
+  (persistor/write-record! db-config record-id record))
