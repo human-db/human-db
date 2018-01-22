@@ -54,7 +54,7 @@
 
   clojure.lang.PersistentVector
   (yaml.writer/encode [data]
-    (vec (sort (map yaml.writer/encode data))))
+    (vec (map yaml.writer/encode data)))
 
   clojure.lang.PersistentHashMap
   (yaml.writer/encode [data]
