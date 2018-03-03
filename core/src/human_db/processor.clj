@@ -1,6 +1,6 @@
-(ns humandb.processor
+(ns human-db.processor
   (:require
-    [humandb.processors.interface :as interface]))
+    [human-db.processors.interface :as interface]))
 
 (def extension interface/extension)
 (def many-from-string interface/many-from-string)

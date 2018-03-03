@@ -1,6 +1,6 @@
-(ns humandb.processors.yaml
+(ns human-db.processors.yaml
   (:require
-    [humandb.processors.interface :as interface]
+    [human-db.processors.interface :as interface]
     [yaml.writer]
     [yaml.reader]))
 

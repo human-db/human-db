@@ -1,4 +1,4 @@
-(ns humandb.processors.interface)
+(ns human-db.processors.interface)
 
 (defn get-processor [db-config & args] (db-config :processor))
 

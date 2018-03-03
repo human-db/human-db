@@ -1,5 +1,5 @@
-(defproject humandb.test "0.4.1"
+(defproject human-db.test "0.5.0"
   :dependencies [[org.clojure/clojure "1.9.0"]
-                 [humandb.core "0.4.1"]
-                 [humandb.processors.yaml "0.4.0-1"]
-                 [humandb.persistors.github "0.4.0-3"]])
+                 [human-db.core "0.5.0"]
+                 [human-db.processors.yaml "0.5.0"]
+                 [human-db.persistors.github "0.5.0"]])

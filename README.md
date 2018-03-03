@@ -1,25 +1,25 @@
-# HumanDB
+# Human DB
 
 
 ## Usage
 
 ```clojure
-[humandb.core "0.4.0"]
+[human-db.core "0.4.0"]
 
 ; processors
-[humandb.processors.yaml "0.4.0-1"]
+[human-db.processors.yaml "0.4.0-1"]
 
 ; persistors
 ; file-system include in core
-[humandb.persistors.github "0.4.0-1"]  
+[human-db.persistors.github "0.4.0-1"]  
 ```
 
 ```clojure
 
 (ns project.foo
   (:require
-    [humandb.core :as humandb]
-    [humandb.processors.yaml))
+    [human-db.core :as human-db]
+    [human-db.processors.yaml))
 
 (def db-config
   {:processor :yaml
@@ -28,10 +28,10 @@
    :key-order [:id :title]})
 
 ; get all records
-(humandb/get-records db-config)
+(human-db/get-records db-config)
 
 ; update key-value pair in a record
-(humandb/update-record! db-config record-id {k v}) 
+(human-db/update-record! db-config record-id {k v}) 
 
 ```
 

@@ -1,7 +1,7 @@
-(ns humandb.persistor
+(ns human-db.persistor
   (:require
-    [humandb.persistors.interface :as interface]
-    [humandb.persistors.file-system]))
+    [human-db.persistors.interface :as interface]
+    [human-db.persistors.file-system]))
 
 (def get-records interface/get-records)
 (def read-record interface/read-record)

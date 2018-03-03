@@ -1,13 +1,13 @@
-(ns humandb.persistors.github
+(ns human-db.persistors.github
   (:require
     [clojure.data.json :as json]
     [clojure.string :as string]
     [me.raynes.fs :as fs]
     [org.httpkit.client :as http]
     [me.raynes.fs.compression :as fs.compression]
-    [humandb.processor :as processor]
-    [humandb.persistors.interface :as interface]
-    [humandb.persistors.file-system :as file-system])
+    [human-db.processor :as processor]
+    [human-db.persistors.interface :as interface]
+    [human-db.persistors.file-system :as file-system])
   (:import
     [org.apache.commons.codec.digest DigestUtils]
     [org.apache.commons.codec.binary Base64]))
@@ -82,8 +82,8 @@
                  (assoc memo (.getName file) (-git-sha (slurp file)))) {})))
 
 (defn -fetch-archive! [db-config]
-  (let [temp-file (fs/temp-file "humandb_data_archive")
-        temp-dir (fs/temp-dir "humandb_data_archive_unpacked")
+  (let [temp-file (fs/temp-file "human-db_data_archive")
+        temp-dir (fs/temp-dir "human-db_data_archive_unpacked")
         repo (get-in db-config [:persistor :repo])
         branch (get-in db-config [:persistor :branch])]
     (clojure.java.io/copy 

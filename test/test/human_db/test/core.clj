@@ -1,16 +1,16 @@
-(ns humandb.test.core
+(ns human-db.test.core
   (:require
     [clojure.test :refer :all]
-    [humandb.test.helpers :refer [with-dir]]
-    [humandb.core :as humandb]
-    [humandb.processors.yaml]))
+    [human-db.test.helpers :refer [with-dir]]
+    [human-db.core :as human-db]
+    [human-db.processors.yaml]))
 
 (deftest get-record
   (testing "return record"
     (with-dir [dir {"foo.yaml" "id: foo\na: 1"}]
       (is (= {:id "foo"
               :a 1}
-             (humandb/get-record {:processor :yaml
+             (human-db/get-record {:processor :yaml
                                   :persistor {:type :file-system
                                               :data-path dir}} "foo"))))))
 
@@ -22,7 +22,7 @@
                 :a 1}
                {:id "bar"
                 :a 2}} 
-             (set (humandb/get-records {:processor :yaml
+             (set (human-db/get-records {:processor :yaml
                                         :persistor {:type :file-system
                                                     :data-path dir}})))))))
 
@@ -32,22 +32,22 @@
       (let [db-config {:processor :yaml
                        :persistor {:type :file-system
                                    :data-path dir}}]
-        (humandb/store-record! db-config "bar" {:id "bar"
+        (human-db/store-record! db-config "bar" {:id "bar"
                                                 :a 3})
         (is (= {:id "bar"
                 :a 3} 
-               (humandb/get-record db-config "bar"))))))
+               (human-db/get-record db-config "bar"))))))
 
   (testing "overwrites record"
     (with-dir [dir {"foo.yaml" "id: foo\na: 1"}]
       (let [db-config {:processor :yaml
                        :persistor {:type :file-system
                                    :data-path dir}}]
-        (humandb/store-record! db-config "foo" {:id "foo"
+        (human-db/store-record! db-config "foo" {:id "foo"
                                                 :a 3})
         (is (= {:id "foo"
                 :a 3} 
-               (humandb/get-record db-config "foo")))))))
+               (human-db/get-record db-config "foo")))))))
 
 (deftest update-record!
   (testing "creates record"
@@ -55,18 +55,18 @@
       (let [db-config {:processor :yaml
                        :persistor {:type :file-system
                                    :data-path dir}}]
-        (humandb/update-record! db-config "bar" {:id "bar"
+        (human-db/update-record! db-config "bar" {:id "bar"
                                                  :a 3})
         (is (= {:id "bar"
                 :a 3} 
-               (humandb/get-record db-config "bar"))))))
+               (human-db/get-record db-config "bar"))))))
 
   (testing "updates existing record"
     (with-dir [dir {"foo.yaml" "id: foo\na: 1"}]
       (let [db-config {:processor :yaml
                        :persistor {:type :file-system
                                    :data-path dir}}]
-        (humandb/update-record! db-config "foo" {:a 3})
+        (human-db/update-record! db-config "foo" {:a 3})
         (is (= {:id "foo"
                 :a 3} 
-               (humandb/get-record db-config "foo")))))))
+               (human-db/get-record db-config "foo")))))))

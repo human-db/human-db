@@ -1,6 +1,6 @@
-(ns humandb.core
+(ns human-db.core
   (:require
-    [humandb.persistor :as persistor]))
+    [human-db.persistor :as persistor]))
 
 (defn get-records [db-config]
   (persistor/get-records db-config))

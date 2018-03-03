@@ -1,4 +1,4 @@
-(ns humandb.persistors.interface)
+(ns human-db.persistors.interface)
 
 (defn get-persistor [db-config & args] 
   (get-in db-config [:persistor :type]))

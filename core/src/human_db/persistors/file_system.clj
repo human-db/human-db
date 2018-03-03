@@ -1,9 +1,9 @@
-(ns humandb.persistors.file-system
+(ns human-db.persistors.file-system
   (:require
     [clojure.java.io :as io]
     [clojure.string :as string]
-    [humandb.processor :as processor]
-    [humandb.persistors.interface :as interface]))
+    [human-db.processor :as processor]
+    [human-db.persistors.interface :as interface]))
 
 (defn -record-file-path [db-config record-id]
   (str (get-in db-config [:persistor :data-path]) "/" record-id "." (processor/extension db-config)))
