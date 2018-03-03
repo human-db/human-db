@@ -4,14 +4,14 @@
 ## Usage
 
 ```clojure
-[human-db.core "0.4.0"]
+[human-db/core "0.5.0"]
 
 ; processors
-[human-db.processors.yaml "0.4.0-1"]
+[human-db/processors.yaml "0.5.0"]
 
 ; persistors
 ; file-system include in core
-[human-db.persistors.github "0.4.0-1"]  
+[human-db/persistors.github "0.5.0"]  
 ```
 
 ```clojure
