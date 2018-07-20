@@ -52,6 +52,12 @@
   (yaml.writer/encode [data]
     (yaml.writer/encode (str data)))
 
+  clojure.lang.Keyword
+  (yaml.writer/encode [data]
+    (if (namespace data)
+      (str (namespace data) "/" (name data))
+      (name data)))
+
   clojure.lang.PersistentVector
   (yaml.writer/encode [data]
     (vec (map yaml.writer/encode data)))
