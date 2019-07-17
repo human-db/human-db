@@ -54,13 +54,46 @@
                                           :content (base64-encode content)
                                           :author_email (author :email)
                                           :author_name (author :name)})}))]
-    (if (= 200 (response :status))
+    (if (<= 200 (response :status) 299)
       true
       (do
-        (println "ERROR PUSHING FILE TO GITHUB" path (response :body))
+        (println "Error updating file on Gitlab" path (response :body))
         nil))))
 
-(defn -fetch-archive! [db-config]
+(defn -file-exists? [db-config path]
+  (let [project-id (get-in db-config [:persistor :project-id])
+        branch (get-in db-config [:persistor :branch])
+        response @(http/head (str api-base-url "/projects/" project-id "/repository/files/" (http/url-encode path))
+                             {:query-params {:ref branch}
+                              :headers (-auth-headers db-config)})]
+    (<= 200 (response :status) 299)))
+
+(defn -create-file! [db-config path {:keys [content message]}]
+  (let [project-id (get-in db-config [:persistor :project-id])
+        branch (get-in db-config [:persistor :branch])
+        author (get-in db-config [:persistor :author])
+        response (-> @(http/post (str api-base-url "/projects/" project-id "/repository/files/" (http/url-encode path))
+                                {:headers (merge (-auth-headers db-config)
+                                                 {"Content-Type" "application/json"})
+                                 :body (json/write-str
+                                         {:branch branch
+                                          :commit_message message
+                                          :encoding "base64"
+                                          :content (base64-encode content)
+                                          :author_email (author :email)
+                                          :author_name (author :name)})}))]
+    (if (<= 200 (response :status) 299)
+      true
+      (do
+        (println "Error creating file on Gitlab" path (response :body))
+        nil))))
+
+(defn -create-or-update-file! [db-config path opts]
+  (if (-file-exists? db-config path)
+    (-update-file! db-config path opts)
+    (-create-file! db-config path opts)))
+
+(defn -fetch-archive [db-config]
   (let [temp-file (fs/temp-file "human-db_data_archive" "zip")
         temp-dir (fs/temp-dir "human-db_data_archive_unpacked")
         project-id (get-in db-config [:persistor :project-id])
@@ -81,7 +114,7 @@
 
 (defmethod interface/get-records :gitlab
   [db-config]
-  (->> (-fetch-archive! db-config)
+  (->> (-fetch-archive db-config)
        (file-system/-files db-config)
        (map (fn [f]
               (->> f
@@ -96,8 +129,8 @@
 
 (defmethod interface/write-record! :gitlab
   [db-config record-id record-data]
-  (-update-file! db-config (file-system/-record-file-path db-config record-id)
-                 {:content (processor/to-string db-config record-data)
-                  :message (str "Update " record-id)}))
-
-
+  (-create-or-update-file!
+    db-config
+    (file-system/-record-file-path db-config record-id)
+    {:content (processor/to-string db-config record-data)
+     :message (str "Update " record-id)}))
