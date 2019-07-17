@@ -1,4 +1,4 @@
-(defproject human-db/persistors.gitlab "0.5.0"
+(defproject human-db/persistors.gitlab "0.5.0-1"
   :dependencies [[org.clojure/clojure "1.9.0-beta1"]
                  [human-db/core "0.5.0"]
                  [commons-codec "1.10"]
