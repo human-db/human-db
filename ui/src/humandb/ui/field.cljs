@@ -2,6 +2,7 @@
   (:require
     [reagent.core :as r]
     [humandb.ui.fields.core :as fields]
+    [humandb.ui.fields.bool]
     [humandb.ui.fields.date]
     [humandb.ui.fields.datetime]
     [humandb.ui.fields.email]
